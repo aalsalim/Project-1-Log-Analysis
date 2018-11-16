@@ -2,6 +2,7 @@
 
 import psycopg2
 
+
 # Connect to database
 def connect(sql_request):
     conn = psycopg2.connect(database="news")
@@ -10,6 +11,7 @@ def connect(sql_request):
     results = cursor.fetchall()
     conn.close()
     return results
+
 
 # Building Query 1 : The most popular three articles of	all	time:
 query1 = """SELECT articles.title, COUNT(*) AS num
@@ -48,6 +50,7 @@ query3 = """SELECT total.day,
     WHERE (ROUND(((errors.error_requests*1.0) / total.requests), 3) > 0.01)
     ORDER BY percent DESC;"""
 
+
 # Run&Print Query 1 : The	most popular three articles	of	all	time:
 def get_top_three_articles():
     results = connect(query1)
@@ -56,8 +59,9 @@ def get_top_three_articles():
     # Print the results
     count = 1
     for title, num in results:
-        print( ' (' + str(count) + ')' + " \"{}\" - {} views".format(title, num))
+        print('(' + str(count) + ')' + " \"{}\" - {} views".format(title, num))
         count += 1
+
 
 # Run&Print Query 2 : The most popular article authors of all time:
 def get_top_article_authors():
@@ -67,8 +71,9 @@ def get_top_article_authors():
     # Print the results
     count = 1
     for name, num in results:
-        print( ' (' + str(count) + ')' + " {} - {} views".format(name, num))
+        print(' (' + str(count) + ')' + " {} - {} views".format(name, num))
         count += 1
+
 
 # Run&Print Query 3 : Day with more than 1% of requests lead to errors:
 def get_days_with_errors():
@@ -79,7 +84,8 @@ def get_days_with_errors():
     for i in results:
         date = i[0].strftime('%B %d, %Y')
         errors = str(round(i[1]*100, 1)) + "%" + " errors"
-        print(" *"+ date + " - " + errors)
+        print(" *" + date + " - " + errors)
+
 
 print('Please wait to calculate the results...\n')
 get_top_three_articles()
